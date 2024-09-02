@@ -4,6 +4,7 @@ using IntroduccionAEFcore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntroduccionAEFcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240902185517_RelacionPeliculaComentarios")]
+    partial class RelacionPeliculaComentarios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace IntroduccionAEFcore.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("GeneroPelicula", b =>
-                {
-                    b.Property<int>("GenerosId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("peliculasid")
-                        .HasColumnType("int");
-
-                    b.HasKey("GenerosId", "peliculasid");
-
-                    b.HasIndex("peliculasid");
-
-                    b.ToTable("GeneroPelicula");
-                });
 
             modelBuilder.Entity("IntroduccionAEFcore.Entidades.Actor", b =>
                 {
@@ -129,44 +117,6 @@ namespace IntroduccionAEFcore.Migrations
                     b.ToTable("Peliculas");
                 });
 
-            modelBuilder.Entity("IntroduccionAEFcore.Entidades.PeliculaActor", b =>
-                {
-                    b.Property<int>("ActorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PeliculaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MyProperty")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Personaje")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.HasKey("ActorId", "PeliculaId");
-
-                    b.HasIndex("PeliculaId");
-
-                    b.ToTable("PeliculaActors");
-                });
-
-            modelBuilder.Entity("GeneroPelicula", b =>
-                {
-                    b.HasOne("IntroduccionAEFcore.Entidades.Genero", null)
-                        .WithMany()
-                        .HasForeignKey("GenerosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("IntroduccionAEFcore.Entidades.Pelicula", null)
-                        .WithMany()
-                        .HasForeignKey("peliculasid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("IntroduccionAEFcore.Entidades.Comentario", b =>
                 {
                     b.HasOne("IntroduccionAEFcore.Entidades.Pelicula", "Pelicula")
@@ -178,30 +128,9 @@ namespace IntroduccionAEFcore.Migrations
                     b.Navigation("Pelicula");
                 });
 
-            modelBuilder.Entity("IntroduccionAEFcore.Entidades.PeliculaActor", b =>
-                {
-                    b.HasOne("IntroduccionAEFcore.Entidades.Actor", "Actor")
-                        .WithMany()
-                        .HasForeignKey("ActorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("IntroduccionAEFcore.Entidades.Pelicula", "Pelicula")
-                        .WithMany("PeliculasActores")
-                        .HasForeignKey("PeliculaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Actor");
-
-                    b.Navigation("Pelicula");
-                });
-
             modelBuilder.Entity("IntroduccionAEFcore.Entidades.Pelicula", b =>
                 {
                     b.Navigation("Comentarios");
-
-                    b.Navigation("PeliculasActores");
                 });
 #pragma warning restore 612, 618
         }

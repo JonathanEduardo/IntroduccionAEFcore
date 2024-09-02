@@ -7,5 +7,6 @@ namespace IntroduccionAEFcore.Entidades
         public int Id { get; set; }
         [StringLength(maximumLength: 150 )]
         public string Nombre { get; set; } = null!;
+        public HashSet<Pelicula> peliculas { get; } = new HashSet<Pelicula>();
     }
 }
